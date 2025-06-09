@@ -1,4 +1,4 @@
-# Django React Vite Starter Project? Under development and looking for collaborators
+# Django React Vite Starter Project: Under development and looking for collaborators
 
 This repository serves as a starter template for developing web applications using Django for the backend and React with Vite for the frontend. It includes a Docker setup for easy environment management and deployment.
 
