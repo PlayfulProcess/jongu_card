@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: db
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - mynetwork
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    command: "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/code
+      - ./.env:/code/.env
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - mynetwork
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - mynetwork
+
+  uptime-kuma:
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma
+    restart: always
+    ports:
+      - "3001:3001"
+    networks:
+      - mynetwork
+    volumes:
+      - uptime-kuma-data:/app/data
+
+volumes:
+  postgres_data:
+  uptime-kuma-data:
+
+networks:
+  mynetwork:
