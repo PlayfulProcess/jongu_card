@@ -2,6 +2,8 @@
 
 This repository serves as a starter template for developing web applications using Django for the backend and React with Vite for the frontend. It includes a Docker setup for easy environment management and deployment.
 
+This is a product intended to be part of a wider platform that I am currently developing, but that might take years. If you are inteested in exploring and collaborating, you can look here: https://jongu.org/.
+
 ## Setup Instructions
 
 ### Prerequisites
